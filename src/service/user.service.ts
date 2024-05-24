@@ -53,9 +53,9 @@ export class userServiceClass{
             if (req.query.gender) {
                 searchQuery.gender = req.query.gender; // Filter by specific gender
             }
-            if (req.query.ageGreaterThan) {
-                searchQuery.age = { $gt: parseInt(req.query.ageGreaterThan as string) };
-            }
+            // if (req.query.ageGreaterThan) {
+            //     searchQuery.age = { $gt: parseInt(req.query.ageGreaterThan as string) };
+            // }
             if(req.query.avgUserAge){
                 searchQuery.age = {$group :{ agerageAge: {$avg :"$age"}}}
             }
@@ -63,25 +63,49 @@ export class userServiceClass{
             // const filter = { ...searchQuery, ...roleFilter }; add here and remove $match in pipeline
             
             const filter : any= {};
-            if(req.query.filter) {
-                const filterValue = req.query.filter as string;
-                filter.$and = [
-                    // {gender: "male"},
-                    // {role: "student"},
-                    // {age: {$gt: 20}}
-                    {gender: {$regex: filterValue, $options:'i'}},
-                    {role: {$regex: filterValue, $options:"i"}},
-                    {age: {$regex:filterValue, $options:'i'}}
-                ]
+            if (req.query.filter) {
+                filter.$and = [];
+                if (req.query.gender) {
+                    filter.$and.push({ gender: req.query.gender });
+                }
+                if (req.query.role) {
+                    filter.$and.push({ role: req.query.role });
+                }
+                if (req.query.ageGreaterThan) {
+                    const ageThreshold = parseInt(req.query.ageGreaterThan as string);
+                    filter.$and.push({ age: { $gt: ageThreshold } });
+                }
             }
+            // if(req.query.filter) {
+            //     const {
+            //         gender,role, age
+            //     } = req.query ;
+
+
+            //     const userGender = gender
+            //     const userRole = role
+            //     const userAge =age
+                
+            //     filter.$and = [
+            //         // {gender: "male"},
+            //         // {role: "student"},
+            //         // {age: {$gt: 20}}
+            //         {gender: {$regex: userGender?.toString(), $options:'i'}},
+            //         {role: {$regex: userRole?.toString(), $options:"i"}},
+            //         {age: {$regex:userAge?.toString(), $options:'i'}}
+            //     ]
+            // }
             const sort = req.query.sort ? JSON.parse(req.query.sort as string) : { createdAt: -1 }; // default sorting by createdAt descending
+            
             
             const searching = {...searchQuery}
             const filtering = {...filter}
 
             const pipeline = [
                 // {$match:{ role: "student"}},
-                {$match: {...searching, ...filtering}},
+                // {$match: {...searching,}},
+                {$match: { ...filtering}},
+
                 // {$match: roleFilter},
                 {$skip: skip},
                 {$limit: limit},
@@ -89,6 +113,7 @@ export class userServiceClass{
             ]
 
             const data = await userModel.aggregate(pipeline).exec();            
+            // res.status(200).json({MESSAGE:"Data", pipeline})
             return data;
         } catch (error: any) {
             throw new Error(error.message);
