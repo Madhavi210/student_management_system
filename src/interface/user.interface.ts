@@ -12,18 +12,13 @@ export interface IUser extends Document {
     profilePic: string , //url 
     address: string,
     accessToken?: string;
-    refreshToken?: string
+    refreshToken?: string;
+    enrollmentNo?: number;
 } ;
 
 export interface ITeacher extends IUser {};
 
 export interface IPrincipal extends IUser {} ;
-
-export interface IStudent extends IUser{
-    enrollmentNo: number;
-    department: Schema.Types.ObjectId | IDepartment;
-    advisor: Schema.Types.ObjectId | ITeacher;
-}
 
 
 
