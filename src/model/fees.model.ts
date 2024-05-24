@@ -1,6 +1,6 @@
-import mongoose, {Schema, Model, mongo } from "mongoose";
-import { gender, role ,resultStatus, paymentStatus, paymentMode} from "../enum/index.enum";
-import {  IDepartment, IFees, INotification, IResult, IUser } from "../interface/index.interface";
+import mongoose, {Schema, Model } from "mongoose";
+import {  paymentStatus, paymentMode} from "../enum/index.enum";
+import { IFees} from "../interface/index.interface";
 
 
 const feesSchema = new Schema<IFees>({

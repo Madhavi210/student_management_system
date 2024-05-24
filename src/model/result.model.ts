@@ -6,7 +6,7 @@ import { number } from "yup";
 const resultSchema = new Schema<IResult>({
     student:{
         type: Schema.Types.ObjectId,
-        ref: 'usreModel',
+        ref: 'userModel',
         required: true,
     },
     obtainMarks: {

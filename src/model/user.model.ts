@@ -51,21 +51,20 @@ const userSchema = new Schema<IUser>({
     },
     refreshToken : {
         type: String,
-    }
+    },
+    enrollmentNo: { 
+        type: Number
+    },
 },
 {timestamps: true});
 
-const studentSchema = new Schema<IStudent>({
-    enrollmentNo: { type: Number, required: true },
-    department: { type: Schema.Types.ObjectId, ref: 'Department', required: true }, // Reference to department
-    advisor: { type: Schema.Types.ObjectId, ref: 'Teacher', required: true } 
-})
+
 
 export const userModel: Model<IUser> = mongoose.model("userModel", userSchema);
 
 
 export const TeacherModel: Model<ITeacher> = mongoose.model("TeacherModel", userSchema);
 export const PrincipalModel: Model<IPrincipal> = mongoose.model("PrincipalModel", userSchema);
-export const StudentModel: Model<IStudent> = mongoose.model("StudentModel", studentSchema);
+export const StudentModel: Model<IStudent> = mongoose.model("StudentModel", userSchema);
 
 

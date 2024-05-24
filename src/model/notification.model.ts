@@ -1,11 +1,10 @@
 import mongoose, {Schema, Model } from "mongoose";
-import { gender, role ,resultStatus} from "../enum/index.enum";
-import {  IDepartment, IFees, INotification, IResult, IUser } from "../interface/index.interface";
+import { INotification} from "../interface/index.interface";
 
 const notificationSchema = new Schema<INotification>({
     receiver: {
         type: Schema.Types.ObjectId,
-        ref: "usreModel",
+        ref: "userModel",
         required: true,
     },
     message: {
@@ -21,7 +20,8 @@ const notificationSchema = new Schema<INotification>({
     },
 },{timestamps: true})
 
-export const notificationModel : Model<INotification>= mongoose.model("notificationModel", notificationSchema) 
+export const notificationModel : Model<INotification>= mongoose.model("notificationModel", notificationSchema);  
+ 
 
 
 

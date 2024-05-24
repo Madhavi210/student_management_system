@@ -1,19 +1,24 @@
 import express, { Request, Response } from "express";
-import mongoose  from "mongoose";
 import * as dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import { connectDB } from "./src/db/dbconfig";
-import { error } from "console";
+import { userRouter,feesRouter, resultRouter, departmentRouter, notificationRouter } from "./src/routes/index.routes";
+
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8800;
+const port = process.env.PORT ?? 8800;
 
 app.use(express.json())
 app.use(express.static('./public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}));
 
+app.use('/api/v1/user',userRouter);
+app.use('/api/v1/fees',feesRouter);
+app.use('/api/v1/result',resultRouter);
+app.use('/api/v1/dept',departmentRouter);
+app.use('/api/v1/notify',notificationRouter);
 
 
 connectDB()
