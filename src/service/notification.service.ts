@@ -1,6 +1,6 @@
 import {  notificationModel } from "../model/index.model";
 import { Express , Request, Response } from "express";
-import {  notificationValidate } from "../validate/yup.validate";
+import {  notificationValidate } from "../validate/data.validate";
 
 export class notificationService {
     createNotification = async (req:Request, res:Response) =>{

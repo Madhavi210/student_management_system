@@ -1,7 +1,7 @@
 import { userModel , StudentModel, PrincipalModel, TeacherModel} from "../model/index.model";
 import express, {Request, Response} from 'express';
 import bcrypt from 'bcrypt'
-import { userValidate } from "../validate/yup.validate";
+import { userValidate } from "../validate/data.validate";
 import { skip } from "node:test";
 import { error } from "node:console";
 import { gender, role } from "../enum/user.enum";

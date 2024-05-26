@@ -2,6 +2,7 @@ import express, {Request, Response} from 'express';
 import { departmentService } from '../service/index.service';
 import { apiError } from '../helper/apiError';
 import { apiResponse } from '../helper/apiResponse';
+import { DepartmentModel } from '../model/department.model';
 
 const DepartmentService = new departmentService();
 
@@ -19,8 +20,10 @@ export class departmentControllerClass {
 
     getAllDepartment = async (req:Request, res:Response) =>{
         try {
-            const data = await DepartmentService.getAllDepartment(req, res)
-            const response = new apiResponse(200, data, 'all department retrieved successfully')
+            const data = await DepartmentService.getAllDepartment(req, res);
+            const totalrecord = await DepartmentModel.countDocuments();
+            const totalPage = Math.ceil(totalrecord / parseInt(req.query.limit as string ) || 10); 
+            const response = new apiResponse(200, {data, totalrecord, totalPage, }, 'all department retrieved successfully')
             res.status(response.statuscode).json(response)
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])

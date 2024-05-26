@@ -1,6 +1,6 @@
 import { DepartmentModel } from "../model/index.model";
 import { Express , Request, Response } from "express";
-import { departmentValidate } from "../validate/yup.validate";
+import { departmentValidate } from "../validate/data.validate";
 
 export class departmentService {
     createDepartment = async (req:Request, res:Response) =>{

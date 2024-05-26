@@ -1,6 +1,6 @@
 import {  resultModel } from "../model/index.model";
 import { Express , Request, Response } from "express";
-import { resultValidate } from "../validate/yup.validate";
+import { resultValidate } from "../validate/data.validate";
 
 export class resultService {
     createResult = async (req:Request, res:Response) =>{

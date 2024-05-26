@@ -1,6 +1,6 @@
 import express ,{Request , Response} from 'express'
 import { feesModel } from '../model/index.model'
-import { feesValidate } from '../validate/yup.validate'
+import { feesValidate } from '../validate/data.validate'
 
 
 export class feesServiceClass {
