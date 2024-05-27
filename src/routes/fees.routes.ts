@@ -1,23 +1,23 @@
 
 import express, {Request,Response  } from "express";
-import { feesControllerClass } from "../controller/index.controller";
+import { FeesControllerClass } from "../controller/index.controller";
 import { AuthenticateMiddleware } from "../middleware/authmiddleware";
 
 const router = express.Router();
-const FeesControllerClass = new feesControllerClass();
+const feesControllerClass = new FeesControllerClass();
 const authMiddleware  =  new AuthenticateMiddleware();
 
-router.get('/getall', FeesControllerClass.getAllfees);
+router.get('/getall', feesControllerClass.getAllfees);
 
-router.get('/:id', FeesControllerClass.getfeesById);
+router.get('/:id', feesControllerClass.getfeesById);
 
-router.post('/post', authMiddleware.isPrincipalOrTeacher ,FeesControllerClass.createfees);
+router.post('/post', authMiddleware.isPrincipalOrTeacher ,feesControllerClass.createfees);
 
-router.put('/updatefees/:id', authMiddleware.isPrincipalOrTeacher, FeesControllerClass.updateFeesById);
+router.put('/updatefees/:id', authMiddleware.isPrincipalOrTeacher, feesControllerClass.updateFeesById);
 
-router.delete('/delete/:id', authMiddleware.isPrincipalOrTeacher, FeesControllerClass.deletefeesById);  
+router.delete('/delete/:id', authMiddleware.isPrincipalOrTeacher, feesControllerClass.deletefeesById);  
 
-router.delete("/deleteAll",authMiddleware.isPrincipalOrTeacher, FeesControllerClass.deleteAllfees);
+router.delete("/deleteAll",authMiddleware.isPrincipalOrTeacher, feesControllerClass.deleteAllfees);
 
 export default router;
 

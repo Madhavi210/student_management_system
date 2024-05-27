@@ -5,7 +5,7 @@ import { generatePDF } from "../utils/pdfGenerator";
 import { IResult } from "../interface/result.interface";
 import {resultStatus} from '../enum/result.enum'
 
-export class resultService {
+export class ResultService {
 
     calculateResult =  (result:IResult):IResult =>{
         const {obtainMarks, totalMarks} = result;

@@ -1,9 +1,9 @@
 
 import express, {Request,Response  } from "express";
-import { notificationControllerClass } from "../controller/index.controller";
+import { NotificationControllerClass } from "../controller/index.controller";
 
 const router = express.Router();
-const notifControllerClass = new notificationControllerClass();
+const notifControllerClass = new NotificationControllerClass();
 
 router.get('/', notifControllerClass.getAllNotification);
 
@@ -16,6 +16,8 @@ router.put('/updateNotification/:id', notifControllerClass.updateNotificationByI
 router.delete('/delete/:id', notifControllerClass.deleteNotificationById);  
 
 router.delete("/deleteAll", notifControllerClass.deleteAllNotification);
+
+router.post('/notify', notifControllerClass.notifyUser);
 
 export default router;
 

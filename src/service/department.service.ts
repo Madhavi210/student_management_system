@@ -2,7 +2,7 @@ import { DepartmentModel } from "../model/index.model";
 import { Express , Request, Response } from "express";
 import { departmentValidate } from "../validate/data.validate";
 
-export class departmentService {
+export class DepartmentService {
     createDepartment = async (req:Request, res:Response) =>{
         try {
             await departmentValidate.validate(req.body)

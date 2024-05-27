@@ -1,13 +1,13 @@
-import { departmentService } from "./department.service";
-import { feesServiceClass } from "./fees.service";
-import { notificationService } from "./notification.service";
-import { resultService } from "./result.service";
-import { userServiceClass } from "./user.service";
+import { DepartmentService } from "./department.service";
+import { FeesServiceClass } from "./fees.service";
+import { NotificationService } from "./notification.service";
+import { ResultService } from "./result.service";
+import { UserServiceClass } from "./user.service";
 
 export{
-    userServiceClass,
-    departmentService,
-    feesServiceClass,
-    resultService,
-    notificationService,
+    UserServiceClass,
+    DepartmentService,
+    FeesServiceClass,
+    ResultService,
+    NotificationService,
 }

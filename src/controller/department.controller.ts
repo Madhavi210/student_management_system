@@ -1,15 +1,15 @@
 import express, {Request, Response} from 'express';
-import { departmentService } from '../service/index.service';
+import { DepartmentService } from '../service/index.service';
 import { apiError } from '../helper/apiError';
 import { apiResponse } from '../helper/apiResponse';
 import { DepartmentModel } from '../model/department.model';
 
-const DepartmentService = new departmentService();
+const departmentService = new DepartmentService();
 
-export class departmentControllerClass {
+export class DepartmentControllerClass {
     createDepartment = async (req:Request, res:Response) =>{
         try {
-            const data = await DepartmentService.createDepartment(req, res);
+            const data = await departmentService.createDepartment(req, res);
             const response = new apiResponse(200, data, "department created successfully")
             res.status(response.statuscode).json(response)
         } catch (error:any) {
@@ -20,7 +20,7 @@ export class departmentControllerClass {
 
     getAllDepartment = async (req:Request, res:Response) =>{
         try {
-            const data = await DepartmentService.getAllDepartment(req, res);
+            const data = await departmentService.getAllDepartment(req, res);
             const totalrecord = await DepartmentModel.countDocuments();
             const totalPage = Math.ceil(totalrecord / parseInt(req.query.limit as string ) || 10); 
             const response = new apiResponse(200, {data, totalrecord, totalPage, }, 'all department retrieved successfully')
@@ -33,7 +33,7 @@ export class departmentControllerClass {
 
     getDepartmentById = async (req:Request, res:Response) =>{
         try {
-            const data = await DepartmentService.getDepartmentById( req, res)
+            const data = await departmentService.getDepartmentById( req, res)
             const response = new apiResponse(200, data, 'department by id retrieved successfully')
             res.status(response.statuscode).json(response)
         } catch (error:any) {
@@ -44,7 +44,7 @@ export class departmentControllerClass {
 
     deleteDepartmentById = async(req:Request, res:Response) =>{ 
         try {
-            const data = await DepartmentService.getDepartmentById( req, res)
+            const data = await departmentService.getDepartmentById( req, res)
             const response = new apiResponse(200, data, 'department by id deleted successfully')
             res.status(response.statuscode).json(response)
         } catch (error:any) {
@@ -54,7 +54,7 @@ export class departmentControllerClass {
     }
     deleteAllDepartment = async(req:Request, res:Response) =>{
         try {
-            const data = await DepartmentService.deleteAllDepartment( req, res)
+            const data = await departmentService.deleteAllDepartment( req, res)
             const response = new apiResponse(200, data, 'department by id deleted successfully')
             res.status(response.statuscode).json(response)
         } catch (error:any) {
@@ -65,7 +65,7 @@ export class departmentControllerClass {
 
     updateDepartmentById = async (req:Request, res:Response) =>{ 
         try {
-            const data = await DepartmentService.updateDepartmentById(req, res)
+            const data = await departmentService.updateDepartmentById(req, res)
             const response = new apiResponse(200, {data}, " department updated successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {

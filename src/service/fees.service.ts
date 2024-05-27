@@ -3,7 +3,7 @@ import { feesModel } from '../model/index.model'
 import { feesValidate } from '../validate/data.validate'
 
 
-export class feesServiceClass {
+export class FeesServiceClass {
     createfees = async (req:Request, res:Response) =>{
         try {
             await feesValidate.validate(req.body)

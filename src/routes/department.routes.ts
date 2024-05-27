@@ -1,11 +1,11 @@
 
 import express, {Request,Response  } from "express";
-import { departmentControllerClass } from "../controller/index.controller";
+import { DepartmentControllerClass } from "../controller/index.controller";
 import { AuthenticateMiddleware } from "../middleware/authmiddleware";
 
 
 const router = express.Router();
-const deptControllerClass = new departmentControllerClass();
+const deptControllerClass = new DepartmentControllerClass();
 const authMiddleware  =  new AuthenticateMiddleware();
 
 

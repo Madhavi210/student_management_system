@@ -1,14 +1,14 @@
 import { apiError } from "../helper/apiError";
 import { apiResponse } from "../helper/apiResponse";
 import { notificationModel } from "../model/index.model";
-import { notificationService } from "../service/index.service";
+import { NotificationService } from "../service/index.service";
 import express , {Request, Response} from 'express';
 
-const NotificationService = new notificationService();
-export class notificationControllerClass {
+const notificationService = new NotificationService();
+export class NotificationControllerClass {
     createNotification = async(req:Request, res:Response) => {
         try {
-            const data = await NotificationService.createNotification(req, res);               
+            const data = await notificationService.createNotification(req, res);               
             const response = new apiResponse(200, data , "notification added successfully",);
             res.status(response.statuscode).json(response);
         } catch (error:any) {
@@ -19,7 +19,7 @@ export class notificationControllerClass {
 
     getAllNotification = async(req:Request, res:Response) =>{
         try {
-            const data = await NotificationService.getAllNotification(req,res)
+            const data = await notificationService.getAllNotification(req,res)
             const response = new apiResponse(200,data, "notification retrived successfully",);
             res.status(response.statuscode).json(response);
         } catch (error:any) {
@@ -30,7 +30,7 @@ export class notificationControllerClass {
 
     getNotificationById = async (req:Request, res:Response) => {
         try {
-            const data = await NotificationService.getNotificationById(req,res);
+            const data = await notificationService.getNotificationById(req,res);
             const totalRecord = await notificationModel.countDocuments()
             const totalPages = Math.ceil(totalRecord / (parseInt(req.query.limit as string ) || 10))            
             const response = new apiResponse(200, { totalRecord, totalPages, currentPage:( parseInt(req.query.limit as string) || 1) , data}, "notification retrived by id successfully")
@@ -43,7 +43,7 @@ export class notificationControllerClass {
 
     deleteAllNotification = async(req:Request, res:Response) =>{
         try {
-            const data = await NotificationService.deleteAllNotification(req,res);
+            const data = await notificationService.deleteAllNotification(req,res);
             const response = new apiResponse(200, {data}, "all notification deleted successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
@@ -54,7 +54,7 @@ export class notificationControllerClass {
 
     deleteNotificationById = async (req:Request, res:Response) =>{
         try {
-            const data = await NotificationService.deleteNotificationById(req,res);
+            const data = await notificationService.deleteNotificationById(req,res);
             const response = new apiResponse(200, {data}, " notification deleted by id successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
@@ -65,7 +65,7 @@ export class notificationControllerClass {
 
     updateNotificationById = async (req:Request, res:Response) =>{ 
         try {
-            const data = await NotificationService.updateNotificationById(req, res)
+            const data = await notificationService.updateNotificationById(req, res)
             const response = new apiResponse(200, {data}, " notification updated successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
@@ -73,4 +73,15 @@ export class notificationControllerClass {
             res.status(errResponse.statuscode).json(errResponse)
         }
     }
+
+    notifyUser = async (req: Request, res: Response): Promise<void> => {
+        const { email, password } = req.body;
+      
+        try {
+          await notificationService.sendPasswordEmail(email, password);
+          res.status(200).send('Password email sent successfully');
+        } catch (error) {
+          res.status(500).send('Error sending password email');
+        }
+      };
 }

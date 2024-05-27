@@ -1,13 +1,13 @@
-import { departmentControllerClass } from "./department.controller";
-import { feesControllerClass } from "./fees.controller";
-import { notificationControllerClass } from "./notification.controller";
-import { resultControllerClass } from "./result.controller";
-import { userControllerClass } from "./user.controller";
+import { DepartmentControllerClass } from "./department.controller";
+import { FeesControllerClass } from "./fees.controller";
+import { NotificationControllerClass } from "./notification.controller";
+import { ResultControllerClass } from "./result.controller";
+import { UserControllerClass } from "./user.controller";
 
 export {
-    userControllerClass,
-    departmentControllerClass,
-    feesControllerClass,
-    notificationControllerClass,
-    resultControllerClass,
+    UserControllerClass,
+    DepartmentControllerClass,
+    FeesControllerClass,
+    NotificationControllerClass,
+    ResultControllerClass,
 }

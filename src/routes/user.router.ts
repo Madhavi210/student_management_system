@@ -1,25 +1,25 @@
 
 import express, {Request,Response  } from "express";
-import { userControllerClass } from "../controller/index.controller";
+import { UserControllerClass } from "../controller/index.controller";
 import { AuthenticateMiddleware } from "../middleware/authmiddleware";
 
 const router = express.Router();
-const UserControllerObj = new userControllerClass();
+const userControllerObj = new UserControllerClass();
 const authMiddleware  =  new AuthenticateMiddleware();
 
 
-router.get('/getUser', UserControllerObj.getAllUser);
-router.get('/getStudent', UserControllerObj.getAllStudent);
+router.get('/getUser', userControllerObj.getAllUser);
+router.get('/getStudent', userControllerObj.getAllStudent);
 
-router.get('/:id', UserControllerObj.getUserById);
+router.get('/:id', userControllerObj.getUserById);
 
-router.post('/post', UserControllerObj.createUser);
+router.post('/post', userControllerObj.createUser);
 
-router.put('/updateUser/:id', authMiddleware.isLoggedIn, UserControllerObj.updateUserById);
+router.put('/updateUser/:id', authMiddleware.isLoggedIn, userControllerObj.updateUserById);
 
-router.delete('/delete/:id', authMiddleware.isPrincipalOrTeacher, UserControllerObj.deleteUserById);  
+router.delete('/delete/:id', authMiddleware.isPrincipalOrTeacher, userControllerObj.deleteUserById);  
 
-router.delete("/deleteAll", authMiddleware.isPrincipal, UserControllerObj.deleteAllUser);
+router.delete("/deleteAll", authMiddleware.isPrincipal, userControllerObj.deleteAllUser);
 
 router.post('/login', authMiddleware.userExist, authMiddleware.userLogin);
 

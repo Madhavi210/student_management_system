@@ -6,7 +6,7 @@ import { skip } from "node:test";
 import { error } from "node:console";
 import { gender, role } from "../enum/user.enum";
 
-export class userServiceClass{ 
+export class UserServiceClass{ 
     createUser = async(req:Request, res:Response) => {
         try {
             await userValidate.validate(req.body)

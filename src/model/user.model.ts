@@ -58,10 +58,7 @@ const userSchema = new Schema<IUser>({
 },
 {timestamps: true});
 
-
-
 export const userModel: Model<IUser> = mongoose.model("userModel", userSchema);
-
 
 export const TeacherModel: Model<ITeacher> = mongoose.model("TeacherModel", userSchema);
 export const PrincipalModel: Model<IPrincipal> = mongoose.model("PrincipalModel", userSchema);

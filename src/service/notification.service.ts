@@ -1,8 +1,9 @@
 import {  notificationModel } from "../model/index.model";
 import { Express , Request, Response } from "express";
 import {  notificationValidate } from "../validate/data.validate";
+import { transporter } from '../utils/emailGenerate';
 
-export class notificationService {
+export class NotificationService {
     createNotification = async (req:Request, res:Response) =>{
         try {
             await notificationValidate.validate(req.body)
@@ -72,5 +73,20 @@ export class notificationService {
             throw new Error(error.message)
         }
     }
+
+    sendPasswordEmail = async (toEmail: string, password: string): Promise<void> => {
+        const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: "madhavi@gmail.com",
+          subject: 'holiday info',
+          text: `diwali festival`,
+        };
+        try {
+          const info = await transporter.sendMail(mailOptions);
+          console.log('Message sent: %s', info.messageId);
+        } catch (error) {
+          console.error('Error sending email:', error);
+        }
+      };
 
 }
