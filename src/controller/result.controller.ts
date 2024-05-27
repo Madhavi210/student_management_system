@@ -72,5 +72,26 @@ export class resultControllerClass {
             const errResponse = new apiError(500, "Internal server error", [error.message])
             res.status(errResponse.statuscode).json(errResponse)
         }
-    }
+    };
+
+    downloadPDF = async (req: Request, res: Response) => {
+        try {
+          const doc = await ResultService.getResultDetailPDF(req, res);
+          if (doc) {
+            res.setHeader("Content-Type", "application/pdf");
+            res.setHeader(
+              "Content-Disposition",
+              'attachment; filename="result_details.pdf"',
+            );
+            doc.pipe(res);
+            doc.end();
+          } else {
+            const errResponse = new apiError(500, "Internal Server Error", [ "error generating pdf",]);
+            res.status(errResponse.statuscode).json(errResponse);
+          }
+        } catch (error: any) {
+          const errResponse = new apiError(500, "Internal Server Error", [error.message, ]);
+          res.status(errResponse.statuscode).json(errResponse);
+        }
+      };
 }

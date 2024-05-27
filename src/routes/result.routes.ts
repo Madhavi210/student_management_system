@@ -17,5 +17,8 @@ router.delete('/delete/:id', ResultControllerClass.deleteResultById);
 
 router.delete("/deleteAll", ResultControllerClass.deleteAllResult);
 
+router.get("/pdf/:id", ResultControllerClass.downloadPDF);
+
+
 export default router;
 
