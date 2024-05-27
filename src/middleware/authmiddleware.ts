@@ -93,13 +93,9 @@ export class AuthenticateMiddleware {
                 email: user.email,
                 role: user.role,
             };
-            // console.log(req.session.id,req.session.user);
-            
 
             const response = new apiResponse(200, updatedUser, "user logging successfully");
-            
             res.cookie('refreshToken', refreshToken, {httpOnly:true})
-            
             res.header("auth-token",accessToken).status(response.statuscode).json(response)
 
         } catch (error:any) {
@@ -189,7 +185,7 @@ export class AuthenticateMiddleware {
           }
     
           const accessToken = jwt.sign( { id: user._id, role: user.role }, process.env.ACCESS_SECRET!, { expiresIn: "1h" }, );
-          return res.status(404).json({ accessToken });
+          return res.status(200).json({ accessToken });
         } catch (error:any) {
           return res.status(401).json({ message: "Invalid refresh token" });
         }

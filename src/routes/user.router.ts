@@ -2,6 +2,7 @@
 import express, {Request,Response  } from "express";
 import { UserControllerClass } from "../controller/index.controller";
 import { AuthenticateMiddleware } from "../middleware/authmiddleware";
+import { upload } from "../config/multerConfig";
 
 const router = express.Router();
 const userControllerObj = new UserControllerClass();
@@ -13,7 +14,7 @@ router.get('/getStudent', userControllerObj.getAllStudent);
 
 router.get('/:id', userControllerObj.getUserById);
 
-router.post('/post', userControllerObj.createUser);
+router.post('/post',upload.single('image'), userControllerObj.createUser);
 
 router.put('/updateUser/:id', authMiddleware.isLoggedIn, userControllerObj.updateUserById);
 

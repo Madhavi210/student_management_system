@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "baseUrl": "./",
+    // "baseUrl": "./",
     "outDir": "./dist",
     "forceConsistentCasingInFileNames": true,  
     // "typeRoots": ["./node_modules/@types", "./types"]

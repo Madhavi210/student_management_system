@@ -3,8 +3,8 @@ import * as dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import session from 'express-session';
 import mongoose from 'mongoose';
-import { connectDB } from "./src/db/dbconfig";
-import { userRouter,feesRouter, resultRouter, departmentRouter, notificationRouter } from "./src/routes/index.routes";
+import { connectDB } from "./config/dbconfig";
+import { userRouter,feesRouter, resultRouter, departmentRouter, notificationRouter } from "./routes/index.routes";
 
 dotenv.config();
 
@@ -34,7 +34,7 @@ app.use(session({
 }));
 
 app.use(express.json())
-app.use(express.static('./public'))
+app.use(express.static('./uploads'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}));
 

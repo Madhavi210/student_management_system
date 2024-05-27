@@ -11,8 +11,9 @@ export class UserServiceClass{
         try {
             await userValidate.validate(req.body)
             const {password, ...otherDetail} = req.body;
+            const profilepic = req.file ? req.file.path:'';
             const hashedPassword = await bcrypt.hash(password, 10); 
-            const data = await userModel.create({password: hashedPassword, ...otherDetail});
+            const data = await userModel.create({password: hashedPassword, profilepic, ...otherDetail});
             return data;
         } catch (error:any) {
             throw new Error(error.message)

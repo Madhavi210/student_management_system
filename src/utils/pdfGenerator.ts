@@ -2,8 +2,8 @@ import fs from 'fs';
 import PDFDocument from 'pdfkit';
 import { IResult } from '../interface/index.interface';
 import { error, log } from 'console';
-import { feesModel } from 'src/model/fees.model';
-import { resultModel } from 'src/model/result.model';
+import { feesModel } from '../model/fees.model';
+import { resultModel } from '../model/result.model';
 
 
 export const generatePDF = (data:any) =>{
