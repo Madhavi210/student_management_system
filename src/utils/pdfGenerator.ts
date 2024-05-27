@@ -16,7 +16,7 @@ export const generatePDF = (data:any) =>{
         const initialYPosition = 50;
         const columnGap = 200;
 
-        doc.fontSize(headerFontSize).text('Cab Details', marginLeft, initialYPosition);
+        doc.fontSize(headerFontSize).text('result Details', marginLeft, initialYPosition);
 
         let yPosition = initialYPosition + 40;
 
@@ -24,7 +24,6 @@ export const generatePDF = (data:any) =>{
         data.forEach((elem:any, index:any) =>{
 
             let resultDetail:IResult = elem;
-            console.log(resultDetail);
             
             if(resultDetail){
 

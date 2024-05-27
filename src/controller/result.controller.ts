@@ -94,4 +94,4 @@ export class resultControllerClass {
           res.status(errResponse.statuscode).json(errResponse);
         }
       };
-}
+};

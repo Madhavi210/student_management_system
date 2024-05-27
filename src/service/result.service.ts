@@ -128,7 +128,7 @@ export class resultService {
           const { userId } = req.body;
           const data = await resultModel.find({ studentId: userId });
           if (!data) {
-            return res.status(404).json({ message: "No cab to show" });
+            return res.status(404).json({ message: "No RESULT to show" });
           }
           const doc = await generatePDF(data);
           return doc;
