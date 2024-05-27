@@ -34,7 +34,20 @@ export class userControllerClass {
             const data = await UserServiceClass.getAllUser(req,res);
             const totalRecord = await userModel.countDocuments()
             const totalPages = Math.ceil(totalRecord / (parseInt(req.query.limit as string ) || 10))            
-            const response = new apiResponse(200, { totalRecord, totalPages, currentPage:( parseInt(req.query.limit as string) || 1) , data}, "users retrive successfully")
+            const response = new apiResponse(200, { totalRecord, totalPages, currentPage:( parseInt(req.query.limit as string) || 1) , data}, "users retrieved successfully")
+            res.status(response.statuscode).json(response)
+        } catch (error:any) {
+            const errResponse = new apiError(500, "Internal server error", [error.message])
+            res.status(errResponse.statuscode).json(errResponse)
+        }
+    }
+
+    getAllStudent = async (req:Request, res:Response) => {
+        try {
+            const data = await UserServiceClass.getAllStudent(req,res);
+            const totalRecord = await userModel.countDocuments()
+            const totalPages = Math.ceil(totalRecord / (parseInt(req.query.limit as string ) || 10))            
+            const response = new apiResponse(200, { totalRecord, totalPages, currentPage:( parseInt(req.query.limit as string) || 1) , data}, "student retrieved successfully")
             res.status(response.statuscode).json(response)
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])

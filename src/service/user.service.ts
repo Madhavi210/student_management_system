@@ -120,6 +120,68 @@ export class userServiceClass{
         }
     }
 
+    getAllStudent = async (req:Request, res:Response) => {
+        try {
+            // const data  = userModel.find();
+            const page = parseInt(req.query.page as string ) || 1;
+            const limit = parseInt(req.query.limit as string) || 10;
+            const skip = Math.max(page - 1, 0) * limit;
+
+            const searchQuery:any = {};
+            if(req.query.search) {
+                const searchValue = req.query.search as string;
+                searchQuery.$or = [
+                    {userName : {$regex: searchValue, $options : 'i'}},
+                    {email: {$regex:searchValue, $options: 'i'}},
+                    {role: {$regex: searchValue, $options:'i'}},
+                    {age: {$regex: searchValue, $options:'i'}},
+                    {gender: {$regex: searchValue, $options: 'i'}},
+                    {address: {$regex:searchValue, $options: 'i'}}
+                ];
+            }
+            if (req.query.gender) {
+                searchQuery.gender = req.query.gender; // Filter by specific gender
+            }
+        
+            const filter : any= {};
+            if (req.query.filter) {
+                filter.$and = [];
+                if (req.query.gender) {
+                    filter.$and.push({ gender: req.query.gender });
+                }
+                if (req.query.role) {
+                    filter.$and.push({ role: req.query.role });
+                }
+                if (req.query.ageGreaterThan) {
+                    const ageThreshold = parseInt(req.query.ageGreaterThan as string);
+                    filter.$and.push({ age: { $gt: ageThreshold } });
+                }
+            }
+            
+            const sort = req.query.sort ? JSON.parse(req.query.sort as string) : { createdAt: -1 }; // default sorting by createdAt descending
+            
+            
+            const searching = {...searchQuery}
+            const filtering = {...filter}
+
+            const pipeline = [
+                {$match:{ role: "student"}},
+                {$match: {...searching,}},
+                {$match: { ...filtering}},
+
+                // {$match: roleFilter},
+                {$skip: skip},
+                {$limit: limit},
+                {$sort: sort},
+            ]
+
+            const data = await userModel.aggregate(pipeline).exec();            
+            return data;
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
+
     deleteAllUser = async(req:Request, res:Response) =>{
         try {
             const data = await userModel.deleteMany()
