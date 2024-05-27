@@ -15,19 +15,20 @@ const resultSchema = new Schema<IResult>({
     },
     totalMarks : {
         type: Number,
+        required: true,
     },
     grade: {
         type: String,
-        required: true,
+        // required: true,
     },
     percentage: {
         type: Number,
-        required: true,
+        // required: true,
     },
     status: {
         enum: Object.values(resultStatus),
         type: String,
-        required: true,
+        // required: true,
     },
     rank: {
         type: String,

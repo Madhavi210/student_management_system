@@ -20,10 +20,10 @@ export const userValidate = yup.object().shape({
 export const resultValidate = yup.object().shape({
     student: yup.string().required(), // Assuming student ID is provided as a string
     obtainMarks: yup.number().required().positive().integer(),
-    totalMarks: yup.number().optional().positive().integer(),
-    grade: yup.string().required(),
-    percentage: yup.number().required().positive().integer(),
-    status: yup.string().required().oneOf(Object.values(resultStatus)),
+    totalMarks: yup.number().required().positive().integer(),
+    grade: yup.string(),
+    percentage: yup.number().positive().integer(),
+    status: yup.string().oneOf(Object.values(resultStatus)),
     rank: yup.string().optional()
 });
 

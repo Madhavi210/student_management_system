@@ -39,7 +39,7 @@ export const generatePDF = (data:any) =>{
                  doc.text(`percentage: ${resultDetail.percentage  || 'N/A'}`, marginLeft, yPosition + 120);
                  doc.text(`rank: ${resultDetail.rank  || 'N/A'}`, marginLeft, yPosition + 140);
                
-                 yPosition += 180;
+                 yPosition += 160;
             }
             else{
                 doc.fontSize(rowFontSize).text(`Details unavailable`, marginLeft, yPosition);

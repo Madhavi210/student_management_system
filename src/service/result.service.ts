@@ -2,12 +2,60 @@ import {  resultModel } from "../model/index.model";
 import { Express , Request, Response } from "express";
 import { resultValidate } from "../validate/data.validate";
 import { generatePDF } from "../utils/pdfGenerator";
+import { IResult } from "../interface/result.interface";
+import {resultStatus} from '../enum/result.enum'
 
 export class resultService {
+
+    calculateResult =  (result:IResult):IResult =>{
+        const {obtainMarks, totalMarks} = result;
+        const percentage = (obtainMarks / totalMarks) * 100;
+        let grade = '';
+        let status ;
+
+        if (percentage >= 90) {
+            grade = 'A+';
+            status = resultStatus.PASS;
+        } else if (percentage >= 80) {
+            grade = 'A';
+            status = resultStatus.PASS;
+        } else if (percentage >= 70) {
+            grade = 'B';
+            status = resultStatus.PASS;
+        } else if (percentage >= 60) {
+            grade = 'C';
+            status = resultStatus.PASS;
+        } else if (percentage >= 50) {
+            grade = 'D';
+            status = resultStatus.PASS;
+        } else {
+            grade = 'F';
+            status = resultStatus.FAIL;
+        }
+        result.grade = grade;
+        result.percentage = percentage;
+        result.status = status;
+        return result;
+    }
+
+    // calculateRank = async () => {
+    //     try {
+    //         const results = await resultModel.find().sort({percentage: -1});
+    //         for(let i=0; i<results.length; i++){
+    //             const result = results[i];
+    //             result.rank = i + 1;
+    //             await result.save();
+    //         }
+    //     } catch (error: any) {
+    //         throw new Error(error.message)
+    //     }
+    // }
+
     createResult = async (req:Request, res:Response) =>{
         try {
             await resultValidate.validate(req.body)
-            const data = await resultModel.create(req.body)
+            const resultData = this.calculateResult(req.body);
+            const data = await resultModel.create(resultData)
             if(!data){
                 throw new Error("validation error")
             }
