@@ -19,8 +19,9 @@ export class userControllerClass {
 
     getUserById = async(req:Request, res:Response) =>{
         try {
-            const data = await UserServiceClass.deleteUserById(req,res)
-            const response = new apiResponse(200,data, "users created successfully",);
+            const data = await UserServiceClass.getUserById(req,res);
+            
+            const response = new apiResponse(200, data, "user by id retrieved successfully",);
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal Server Error", [ error.message, ]);
@@ -55,7 +56,7 @@ export class userControllerClass {
     deleteUserById = async (req:Request, res:Response) =>{
         try {
             const data = await UserServiceClass.deleteUserById(req,res);
-            const response = new apiResponse(200, {data}, " user deleted successfully")
+            const response = new apiResponse(200, data, " user deleted successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])

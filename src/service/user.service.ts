@@ -1,4 +1,4 @@
-import { userModel , StudentModel, PrincipalModel, TeacherModel} from "../model/index.model";
+import { userModel , StudentModel, PrincipalModel, TeacherModel, resultModel, feesModel} from "../model/index.model";
 import express, {Request, Response} from 'express';
 import bcrypt from 'bcrypt'
 import { userValidate } from "../validate/data.validate";
@@ -23,7 +23,7 @@ export class userServiceClass{
 
     getUserById = async(req:Request, res:Response) =>{
         try {
-            const {id} = req.params;
+            const {id} = req.params;            
             const data = await userModel.findById(id);
             return data;
         } catch (error:any) {
@@ -131,8 +131,16 @@ export class userServiceClass{
 
     deleteUserById = async (req:Request, res:Response) =>{
         try {
-            const {id} = req.params;
-            const data = await userModel.findByIdAndDelete(id)
+            const {id} = req.params; 
+            const user = await userModel.findById(id);
+            if(!user){
+                console.log("user not found");
+                return;
+            }
+            const deletedResult = await resultModel.deleteMany({studentId: id});
+            const deletedFess= await feesModel.deleteMany({studentId: id});
+            const data = await userModel.findByIdAndDelete(id);
+
             return data;
         } catch (error:any) {
             throw new Error(error.message)

@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import * as dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import session from 'express-session';
-import connectMongo from 'connect-mongo';
 import mongoose from 'mongoose';
 import { connectDB } from "./src/db/dbconfig";
 import { userRouter,feesRouter, resultRouter, departmentRouter, notificationRouter } from "./src/routes/index.routes";
@@ -24,15 +23,15 @@ connectDB()
 
 
 // Session store configuration
-// const MongoStore =  connectMongo(session);
 
-// app.use(session({
-//   secret: process.env.SESSION_SECRET || 'key',
-//   resave: false,
-//   saveUninitialized: false,
-//   store: new MongoStore({ mongooseConnection: mongoose.connection }),
-//   cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
-// }));
+app.use(session({
+  secret: process.env.SESSION_SECRET! ,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    maxAge: 1000 * 60 * 60 * 24,  // 1 day
+    httpOnly: true } 
+}));
 
 app.use(express.json())
 app.use(express.static('./public'))
@@ -44,6 +43,7 @@ app.use('/api/v1/fees',feesRouter);
 app.use('/api/v1/result',resultRouter);
 app.use('/api/v1/dept',departmentRouter);
 app.use('/api/v1/notify',notificationRouter);
+
 
 
 

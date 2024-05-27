@@ -20,6 +20,6 @@ export interface ITeacher extends IUser {};
 
 export interface IPrincipal extends IUser {} ;
 
-
+export interface IStudent extends IUser {};
 
 

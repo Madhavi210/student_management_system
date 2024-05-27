@@ -10,7 +10,7 @@ import { apiResponse } from "../helper/apiResponse";
 import * as dotenv  from 'dotenv'
 import { userModel } from "../model/index.model";
 import { string } from 'yup';
-import { error } from 'console';
+import { error, log } from 'console';
 dotenv.config();
 
 
@@ -18,10 +18,24 @@ interface AuthenticatedRequest extends Request {
     user?: IUser; // Assuming IUser is the interface for your user model
   }
 
-export class authMiddleware {
+  declare module 'express-session' {
+    interface SessionData {
+      user: {
+        id: string;
+        userName: string;
+        email: string;
+        role: string;
+      };
+    }
+  }
+export class AuthenticateMiddleware {
     userExist = async(req:Request, res:Response , next:NextFunction) =>{
         try {
             const {userName, email, password} = req.body;
+            if (!password || (!email && !userName)) {
+              const errResponse = new apiError(400, "Invalid request", ["Email/Username and password are required"]);
+              return res.status(errResponse.statuscode).json(errResponse);
+            }
             const user = await userModel.findOne({
                 $or: [
                     {email}, {userName},
@@ -32,9 +46,9 @@ export class authMiddleware {
                 const errResponse = new apiError(404, "User not found", [ "User not found", ]);
                 return res.status(errResponse.statuscode).json(errResponse);
             }
-
+           
             const isPassword = await bcrypt.compare(password, user.password.toString());
-
+            
             if(!isPassword){
                 const errResponse = new apiError(401, "Invalid credentials", [ "Invalid credentials",]);
                 return res.status(errResponse.statuscode).json(errResponse);
@@ -73,12 +87,14 @@ export class authMiddleware {
 
             const updatedUser = await userModel.findByIdAndUpdate(user._id , {$set:{accessToken, refreshToken}}, {new:true});
 
-            // (req.session as session.Session & {user:SessionData['user']}).user = {
-            //     id: user._id,
-            //     userName: user.userName,
-            //     email: user.email,
-            //     role: user.role,
-            // };
+            req.session.user = {
+                id: user.id,
+                userName: user.userName,
+                email: user.email,
+                role: user.role,
+            };
+            // console.log(req.session.id,req.session.user);
+            
 
             const response = new apiResponse(200, updatedUser, "user logging successfully");
             
@@ -116,11 +132,11 @@ export class authMiddleware {
         }
       };
 
-      isAdmin = async (req: Request, res: Response, next: NextFunction) => {
+      isPrincipal = async (req: Request, res: Response, next: NextFunction) => {
         try {
           const user = (req as AuthenticatedRequest).user; // Assuming req.user contains the authenticated user object
           if (user?.role !== "principal") {
-            const errResponse = new apiError(403,"Forbidden, admin access required", ["Forbidden, admin access required"], );
+            const errResponse = new apiError(403,"Forbidden, principal access required", ["Forbidden, principal access required"], );
             return res.status(errResponse.statuscode).json(errResponse);
           }
           next();
@@ -131,33 +147,60 @@ export class authMiddleware {
           res.status(errResponse.statuscode).json(errResponse);
         }
       };
+
+      isPrincipalOrTeacher = async (req:Request, res:Response, next:NextFunction) => {
+        try {
+          const user = (req as AuthenticatedRequest).user;
+          if(user?.role !== 'principal' && user?.role !== 'teacher'){
+            const errorResponse = new apiError(403, 'Forbidden, principal or teacher required', ['Forbidden, principal or teacher required']);
+            return res.status(errorResponse.statuscode).json(errorResponse);
+          }
+          next();
+        } catch (error:any) {
+            const errorResponse = new apiError(500, 'Internal server Error', [error.message]);
+            res.status(errorResponse.statuscode).json(errorResponse);
+        }
+      }
+
+      isPrincipalOrStudent = async(req:Request, res:Response, next:NextFunction) =>{
+        try {
+            const user = (req as AuthenticatedRequest).user;
+            if(user?.role !== 'principal'  && user?.role !== 'student'){
+              const errorResponse = new apiError(403, 'Forbidden, student or teacher required', ['Forbidden, student or teacher required'])
+              return res.status(errorResponse.statuscode).json(errorResponse);
+            }
+        } catch (error:any) {
+            const errorResponse = new apiError(500, 'Internal server Error', [error.message]);
+            res.status(errorResponse.statuscode).json(errorResponse);
+        }
+      }
     
       refreshToken = async (req: Request, res: Response) => {
         try {
-          const refreshToken =
-            req.body.refreshToken || req.headers["x-refresh-token"];
+          const refreshToken = req.body.refreshToken || req.headers["x-refresh-token"];
           if (!refreshToken) {
             return res.status(401).json({ message: "Refresh token is required" });
           }
-          const decoded: any = jwt.verify( refreshToken, process.env.REFRESH_TOKEN_SECRET!,);
-    
-          const user = await userModel.findById(decoded.userId);
+          const decoded: any = jwt.verify( refreshToken, process.env.REFRESH_SECRET!,);          
+
+          const user = await userModel.findById(decoded.id);
           if (!user) {
             return res.status(404).json({ message: "User not found" });
           }
     
-          const accesstoken = jwt.sign( { id: user._id, role: user.role }, process.env.JWT_SECRET!, { expiresIn: "1h" }, );
-          return res.status(404).json({ accesstoken });
-        } catch (error) {
+          const accessToken = jwt.sign( { id: user._id, role: user.role }, process.env.ACCESS_SECRET!, { expiresIn: "1h" }, );
+          return res.status(404).json({ accessToken });
+        } catch (error:any) {
           return res.status(401).json({ message: "Invalid refresh token" });
         }
       };
 
 
     userLogout = async(req:Request, res:Response) =>{
-        try {
-            // const userId = req.session.user?.id;
-            const userId = req.body;  //remove 
+        try {      
+            const userId = req.session.user?.id;
+            console.log(userId);
+            
             if(!userId){
                 return res.status(400).json({message: 'no user logged in'})
             }
@@ -168,7 +211,8 @@ export class authMiddleware {
                 if(err){
                     return res.status(500).json({message: 'Failed to logout'})
                 }
-                res.clearCookie('connect.sid')
+                res.clearCookie('connect.sid');
+                res.clearCookie('refreshToken');
                 res.status(200).json({message: 'user logged out successfully'})
             })
         } catch (error:any) {
@@ -177,3 +221,5 @@ export class authMiddleware {
         }
     }
 }
+
+
