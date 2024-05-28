@@ -3,6 +3,9 @@ import { Express , Request, Response } from "express";
 import {  notificationValidate } from "../validate/data.validate";
 import { transporter } from '../utils/emailGenerate';
 import randomstring from 'randomstring';
+import { content } from "pdfkit/js/page";
+import { readFile } from 'fs/promises';
+
 
 
 export class NotificationService {
@@ -82,12 +85,17 @@ export class NotificationService {
         const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|:<>?';
         const newPassword = randomstring.generate({length, charset});
         console.log(newPassword);
-        
+        const pdfContent = await readFile('./uploads/result_details.pdf');
+
         const mailOptions = {
           from: process.env.EMAIL_USER,
-          to: "madhavi@gmail.com",
-          subject: 'holiday info',
+          to: "madhavijoshi6023@gmail.com",
+          subject: 'result info',
           text:  `you are logged in with  and ${newPassword}`,
+          attachments:[{
+            filename: 'result_details.pdf',
+            content: pdfContent,
+           }],
         };
           const info = await transporter.sendMail(mailOptions);
           console.log('Message sent: %s', info.messageId);
