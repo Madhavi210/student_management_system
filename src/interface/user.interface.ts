@@ -22,4 +22,3 @@ export interface IPrincipal extends IUser {} ;
 
 export interface IStudent extends IUser {};
 
-

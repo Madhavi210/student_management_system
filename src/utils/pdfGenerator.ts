@@ -5,7 +5,6 @@ import { error, log } from 'console';
 import { feesModel } from '../model/fees.model';
 import { resultModel } from '../model/result.model';
 
-
 export const generatePDF = (data:any) =>{
         const doc = new PDFDocument();
 
@@ -19,7 +18,6 @@ export const generatePDF = (data:any) =>{
         doc.fontSize(headerFontSize).text('result Details', marginLeft, initialYPosition);
 
         let yPosition = initialYPosition + 40;
-
  
         data.forEach((elem:any, index:any) =>{
 
@@ -50,4 +48,5 @@ export const generatePDF = (data:any) =>{
 
         return doc;
 }
+
 

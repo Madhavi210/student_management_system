@@ -79,17 +79,17 @@ export class NotificationService {
         }
     }
 
-    sendPasswordEmail = async (toEmail: string, password: string): Promise<void> => {
+    sendPasswordEmail = async (toEmail: string, password: string) => {
         try {
         const length = 10;
-        const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|:<>?';
+        const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|:<>?'; //alphanumeric
         const newPassword = randomstring.generate({length, charset});
         console.log(newPassword);
         const pdfContent = await readFile('./uploads/result_details.pdf');
 
         const mailOptions = {
           from: process.env.EMAIL_USER,
-          to: "madhavijoshi6023@gmail.com",
+          to: "madhavi@gmail.com",
           subject: 'result info',
           text:  `you are logged in with  and ${newPassword}`,
           attachments:[{
@@ -105,5 +105,6 @@ export class NotificationService {
       };
 
 }
+
 
 

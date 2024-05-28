@@ -1,7 +1,7 @@
 import { error } from 'console';
 import nodemailer from 'nodemailer'
 
-//create transpoter
+//create transporter
 export const transporter = nodemailer.createTransport({
     service:'gmail',
     auth:{
@@ -10,14 +10,13 @@ export const transporter = nodemailer.createTransport({
     },
 });
 
-//verfy transpoter setup
+//verify transporter setup
 transporter.verify((error, success) =>{
     if(error) {
         console.log(error);
     }
     else{
         console.log("server is ready to take our message");
-        
     }
 });
 

@@ -12,7 +12,4 @@ export interface IDepartment extends Document {
 };
 
 
-
-
-
 // how to give subject department wise 

@@ -113,7 +113,7 @@ export class AuthenticateMiddleware {
           }
     
           const decoded: any = jwt.verify(token, process.env.ACCESS_SECRET!);
-          const user = await userModel.findById(decoded.id);
+          const user = await userModel.findById(decoded.id); 
     
           if (!user || !["principal", "teacher", "student"].includes(user.role)) {
             const errResponse = new apiError(403, "Forbidden", ["Forbidden"]);
@@ -127,6 +127,27 @@ export class AuthenticateMiddleware {
           res.status(errResponse.statuscode).json(errResponse);
         }
       };
+
+      refreshToken = async (req: Request, res: Response) => {
+        try {
+          const refreshToken = req.body.refreshToken || req.headers["x-refresh-token"];
+          if (!refreshToken) {
+            return res.status(401).json({ message: "Refresh token is required" });
+          }
+          const decoded: any = jwt.verify( refreshToken, process.env.REFRESH_SECRET!,);          
+
+          const user = await userModel.findById(decoded.id);
+          if (!user) {
+            return res.status(404).json({ message: "User not found" });
+          }
+    
+          const accessToken = jwt.sign( { id: user._id, role: user.role }, process.env.ACCESS_SECRET!, { expiresIn: "1h" }, );
+          return res.status(200).json({ accessToken });
+        } catch (error:any) {
+          return res.status(401).json({ message: "Invalid refresh token" });
+        }
+      };
+
 
       isPrincipal = async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -165,32 +186,12 @@ export class AuthenticateMiddleware {
               const errorResponse = new apiError(403, 'Forbidden, student or teacher required', ['Forbidden, student or teacher required'])
               return res.status(errorResponse.statuscode).json(errorResponse);
             }
+            next();
         } catch (error:any) {
             const errorResponse = new apiError(500, 'Internal server Error', [error.message]);
             res.status(errorResponse.statuscode).json(errorResponse);
         }
       }
-    
-      refreshToken = async (req: Request, res: Response) => {
-        try {
-          const refreshToken = req.body.refreshToken || req.headers["x-refresh-token"];
-          if (!refreshToken) {
-            return res.status(401).json({ message: "Refresh token is required" });
-          }
-          const decoded: any = jwt.verify( refreshToken, process.env.REFRESH_SECRET!,);          
-
-          const user = await userModel.findById(decoded.id);
-          if (!user) {
-            return res.status(404).json({ message: "User not found" });
-          }
-    
-          const accessToken = jwt.sign( { id: user._id, role: user.role }, process.env.ACCESS_SECRET!, { expiresIn: "1h" }, );
-          return res.status(200).json({ accessToken });
-        } catch (error:any) {
-          return res.status(401).json({ message: "Invalid refresh token" });
-        }
-      };
-
 
     userLogout = async(req:Request, res:Response) =>{
         try {      

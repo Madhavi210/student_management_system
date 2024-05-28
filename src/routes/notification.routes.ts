@@ -21,3 +21,4 @@ router.post('/notify', notifControllerClass.notifyUser);
 
 export default router;
 
+

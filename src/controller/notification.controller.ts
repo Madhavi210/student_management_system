@@ -74,7 +74,7 @@ export class NotificationControllerClass {
         }
     }
 
-    notifyUser = async (req: Request, res: Response): Promise<void> => {
+    notifyUser = async (req: Request, res: Response) => {
         const { email, password } = req.body;
       
         try {
@@ -85,3 +85,4 @@ export class NotificationControllerClass {
         }
       };
 }
+

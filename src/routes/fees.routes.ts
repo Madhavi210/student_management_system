@@ -13,11 +13,11 @@ router.get('/:id', feesControllerClass.getfeesById);
 
 router.post('/post', authMiddleware.isPrincipalOrTeacher ,feesControllerClass.createfees);
 
-router.put('/updatefees/:id', authMiddleware.isPrincipalOrTeacher, feesControllerClass.updateFeesById);
+router.put('/updatefees/:id', authMiddleware.isLoggedIn, authMiddleware.isPrincipalOrTeacher, feesControllerClass.updateFeesById);
 
-router.delete('/delete/:id', authMiddleware.isPrincipalOrTeacher, feesControllerClass.deletefeesById);  
+router.delete('/delete/:id',  authMiddleware.isLoggedIn,authMiddleware.isPrincipalOrTeacher, feesControllerClass.deletefeesById);  
 
-router.delete("/deleteAll",authMiddleware.isPrincipalOrTeacher, feesControllerClass.deleteAllfees);
+router.delete("/deleteAll", authMiddleware.isLoggedIn, authMiddleware.isPrincipalOrTeacher, feesControllerClass.deleteAllfees);
 
 export default router;
 

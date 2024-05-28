@@ -10,3 +10,4 @@ export interface IResult extends Document {
     status: "pass" | "fail";
     rank: string,
 }
+

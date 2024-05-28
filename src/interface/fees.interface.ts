@@ -9,7 +9,7 @@ export interface IFees extends Document {
     remainAmount?: number; 
     paidDate: Date;
     payment: {
-        paymentStatus: "pass";
-        paymentMode: "cash";
+        paymentStatus: "success" | 'pending' | 'fail';
+        paymentMode: "cash" | "online";
     }
 };

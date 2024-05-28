@@ -39,4 +39,4 @@ const feesSchema = new Schema<IFees>({
     }
 },{timestamps:true})
 
-export const feesModel:Model<IFees> = mongoose.model("feesModel", feesSchema) 
+export const feesModel:Model<IFees> = mongoose.model("feesModel", feesSchema) ;

@@ -64,9 +64,9 @@ export const feesValidate = yup.object().shape({
 
 export const departmentValidate = yup.object().shape({
     departmentName: yup.string().required("department name is required"),
-    headTeacher: yup.string().required("head teacher isrequired"), // Assuming headTeacher ID is provided as a string
+    headTeacher: yup.string().required("head teacher is required"), // Assuming headTeacher ID is provided as a string
     subjects: yup.array().of(yup.object().shape({
-        subjectName: yup.string().required("subjetc name is required"),
+        subjectName: yup.string().required("subject name is required"),
         facultyName: yup.string().required("faculty name is required"), // Assuming facultyName ID is provided as a string
     })).required(),
 })
