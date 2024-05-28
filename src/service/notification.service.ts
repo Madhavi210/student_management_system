@@ -2,6 +2,8 @@ import {  notificationModel } from "../model/index.model";
 import { Express , Request, Response } from "express";
 import {  notificationValidate } from "../validate/data.validate";
 import { transporter } from '../utils/emailGenerate';
+import randomstring from 'randomstring';
+
 
 export class NotificationService {
     createNotification = async (req:Request, res:Response) =>{
@@ -75,13 +77,18 @@ export class NotificationService {
     }
 
     sendPasswordEmail = async (toEmail: string, password: string): Promise<void> => {
+        try {
+        const length = 10;
+        const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|:<>?';
+        const newPassword = randomstring.generate({length, charset});
+        console.log(newPassword);
+        
         const mailOptions = {
           from: process.env.EMAIL_USER,
           to: "madhavi@gmail.com",
           subject: 'holiday info',
-          text: `diwali festival`,
+          text:  `you are logged in with  and ${newPassword}`,
         };
-        try {
           const info = await transporter.sendMail(mailOptions);
           console.log('Message sent: %s', info.messageId);
         } catch (error) {
@@ -90,3 +97,5 @@ export class NotificationService {
       };
 
 }
+
+

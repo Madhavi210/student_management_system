@@ -17,6 +17,22 @@ export const userValidate = yup.object().shape({
     refreshToken: yup.string().optional()
 })
 
+// password validation 
+
+// export const userSchema = yup.object().shape({
+//     email: yup.string().email('Invalid email format').required('Email is required'),
+//     password: yup.string()
+//       .required('Password is required')
+//       .min(8, 'Password must be at least 8 characters long')
+//       .matches(/(?=.*[a-z])/, 'Password must contain at least one lowercase letter')
+//       .matches(/(?=.*[A-Z])/, 'Password must contain at least one uppercase letter')
+//       .matches(/(?=.*\d)/, 'Password must contain at least one number')
+//       .matches(/(?=.*[@$!%*?&])/, 'Password must contain at least one special character'),
+//     username: yup.string().required('Username is required'),
+//     mobileNumber: yup.string().required('Mobile number is required').matches(/^\d{10}$/, 'Mobile number must be exactly 10 digits'),
+//   })
+
+
 export const resultValidate = yup.object().shape({
     student: yup.string().required(), // Assuming student ID is provided as a string
     obtainMarks: yup.number().required().positive().integer(),
