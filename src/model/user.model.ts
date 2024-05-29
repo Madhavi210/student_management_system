@@ -3,28 +3,34 @@ import mongoose ,{Schema, Model} from "mongoose";
 import { IPrincipal, IStudent,ITeacher, IUser } from "../interface/index.interface";
 import { gender, role } from "../enum/index.enum";
 
+// const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; 
 
 const userSchema = new Schema<IUser>({
     userName: {
         type: String,
-        required: true,
+        required: [true, "username is required"],
         unique: true,
         trim: true,
     },
     email: {
         type: String,
-        required: true,
+        required: [true ,'email is required'],
         unique: true,
         trim: true,
+        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'username must be contain ... ']
     },
     password: {
         type: String,
-        required: true,
+        required: [true, 'password is required'],
         trim: true,
+        match: [/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'password contain ...']
     },
     age: {
         type: Number,
-        required: true,
+        required: [true, 'age is required'],
+        min: [0, 'Age must be a positive number'],
+        max: [120, 'Age must be less than 120']
     },
     gender: {
         type: String,
@@ -55,6 +61,7 @@ const userSchema = new Schema<IUser>({
     enrollmentNo: { 
         type: Number
     },
+    
 },
 {timestamps: true});
 
