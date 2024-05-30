@@ -10,12 +10,12 @@ export const generatePDF = (data:any) =>{
 
         const marginLeft = 50;
         const marginRight = 50;
-        const headerFontSize = 14;
+        const headerFontSize = 18;
         const rowFontSize = 12;
         const initialYPosition = 50;
         const columnGap = 200;
 
-        doc.fontSize(headerFontSize).text('result Details', marginLeft, initialYPosition);
+        doc.fontSize(headerFontSize).text('Result Details', marginLeft, initialYPosition);
 
         let yPosition = initialYPosition + 40;
  
@@ -25,7 +25,7 @@ export const generatePDF = (data:any) =>{
             
             if(resultDetail){
 
-                doc.moveTo(marginLeft, yPosition).lineTo(marginLeft + 4 * columnGap, yPosition).stroke();
+                // doc.moveTo(marginLeft, yPosition).lineTo(marginLeft + 4 * columnGap, yPosition).stroke();
                 
                  // Write cab details
                  doc.fontSize(rowFontSize).text(`student Id: ${resultDetail.student  || 'N/A'}`, marginLeft, yPosition + 20);
@@ -44,9 +44,11 @@ export const generatePDF = (data:any) =>{
             }
         })
         
-       doc.moveTo(marginLeft, yPosition).lineTo(marginLeft + 4 * columnGap, yPosition).stroke();
+    //    doc.moveTo(marginLeft, yPosition).lineTo(marginLeft + 4 * columnGap, yPosition).stroke();
 
         return doc;
 }
+
+
 
 

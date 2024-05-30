@@ -35,7 +35,7 @@ app.use(session({
 
 app.use(express.json())
 app.use(express.static('./uploads'))
-app.use(bodyParser.json())
+app.use(bodyParser.json()) 
 app.use(express.urlencoded({extended:true}));
 
 app.use('/api/v1/user',userRouter);

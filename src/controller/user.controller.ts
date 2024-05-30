@@ -3,6 +3,7 @@ import { apiResponse } from "../helper/apiResponse";
 import { userModel } from "../model/index.model";
 import { UserServiceClass } from "../service/index.service";
 import express , {Request, Response} from 'express';
+import { userValidate } from "../validate/data.validate";
 
 const userServiceClass = new UserServiceClass();
 export class UserControllerClass {
@@ -58,7 +59,7 @@ export class UserControllerClass {
     deleteAllUser = async(req:Request, res:Response) =>{
         try {
             const data = await userServiceClass.deleteAllUser(req,res);
-            const response = new apiResponse(200, {data}, "all user deleted successfully")
+            const response = new apiResponse(200, data, "all user deleted successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])
@@ -80,7 +81,7 @@ export class UserControllerClass {
     updateUserById = async (req:Request, res:Response) =>{ 
         try {
             const data = await userServiceClass.updateUserById(req, res)
-            const response = new apiResponse(200, {data}, " user updated successfully")
+            const response = new apiResponse(200, data, " user updated successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])

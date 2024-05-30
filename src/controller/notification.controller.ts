@@ -44,7 +44,7 @@ export class NotificationControllerClass {
     deleteAllNotification = async(req:Request, res:Response) =>{
         try {
             const data = await notificationService.deleteAllNotification(req,res);
-            const response = new apiResponse(200, {data}, "all notification deleted successfully")
+            const response = new apiResponse(200, data, "all notification deleted successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])
@@ -55,7 +55,7 @@ export class NotificationControllerClass {
     deleteNotificationById = async (req:Request, res:Response) =>{
         try {
             const data = await notificationService.deleteNotificationById(req,res);
-            const response = new apiResponse(200, {data}, " notification deleted by id successfully")
+            const response = new apiResponse(200, data, " notification deleted by id successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])
@@ -66,7 +66,7 @@ export class NotificationControllerClass {
     updateNotificationById = async (req:Request, res:Response) =>{ 
         try {
             const data = await notificationService.updateNotificationById(req, res)
-            const response = new apiResponse(200, {data}, " notification updated successfully")
+            const response = new apiResponse(200,  data, " notification updated successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])

@@ -10,9 +10,10 @@ if(!url){
 export const connectDB = async() =>{
     mongoose.connect(url)
         .then(() =>{
-            console.log("connection successfull");
+            console.log("connection successful");
         })
         .catch(() =>{
             console.log("failed to connect");
         })
 } 
+

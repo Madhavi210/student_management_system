@@ -11,30 +11,31 @@ import { transporter } from "../utils/emailGenerate";
 
 export class UserServiceClass{ 
     createUser = async(req:Request, res:Response) => {
-        try {
             await userValidate.validate(req.body)
             const {password, ...otherDetail} = req.body;
             const profilepic = req.file ? req.file.path:'';
             const hashedPassword = await bcrypt.hash(password, 10); 
             const data = await userModel.create({password: hashedPassword, profilepic, ...otherDetail});
             return data;
-        } catch (error:any) {
-            throw new Error(error.message)
-        }
+    }
+
+    //do not use create method.
+    createUser2 = async (req:Request, res:Response) =>{
+        await userValidate.validate(req.body)
+        const {password, ...otherDetail} = req.body;
+        const hashedPass = await bcrypt.hash(password, 10) 
+        const user = new userModel({password:hashedPass, ...otherDetail})
+        await user.save();
+        return user;
     }
 
     getUserById = async(req:Request, res:Response) =>{
-        try {
             const {id} = req.params;            
             const data = await userModel.findById(id);
             return data;
-        } catch (error:any) {
-            throw new Error(error.message)
-        }
     }
 
     getAllUser = async (req:Request, res:Response) => {
-        try {
             // const data  = userModel.find();
             const page = parseInt(req.query.page as string ) || 1;
             const limit = parseInt(req.query.limit as string) || 10;
@@ -121,13 +122,9 @@ export class UserServiceClass{
             const data = await userModel.aggregate(pipeline).exec();            
             // res.status(200).json({MESSAGE:"Data", pipeline})
             return data;
-        } catch (error: any) {
-            throw new Error(error.message);
-        }
     }
 
     getAllStudent = async (req:Request, res:Response) => {
-        try {
             // const data  = userModel.find();
             const page = parseInt(req.query.page as string ) || 1;
             const limit = parseInt(req.query.limit as string) || 10;
@@ -183,22 +180,14 @@ export class UserServiceClass{
 
             const data = await userModel.aggregate(pipeline).exec();            
             return data;
-        } catch (error: any) {
-            throw new Error(error.message);
-        }
     }
 
     deleteAllUser = async(req:Request, res:Response) =>{
-        try {
             const data = await userModel.deleteMany()
             return data;
-        } catch (error:any) {
-            throw new Error(error.message)
-        }
     }
 
     deleteUserById = async (req:Request, res:Response) =>{
-        try {
             const {id} = req.params; 
             const user = await userModel.findById(id);
             if(!user){
@@ -210,13 +199,9 @@ export class UserServiceClass{
             const data = await userModel.findByIdAndDelete(id);
 
             return data;
-        } catch (error:any) {
-            throw new Error(error.message)
-        }
     }
 
     updateUserById = async (req:Request, res:Response) =>{ 
-        try {
             const {id} = req.params;
             const {userName, password, email, age,gender , role,  dob, address, profilePic} = req.body;
 
@@ -229,13 +214,9 @@ export class UserServiceClass{
                 return res.status(404).json({ error: 'User not found.' });
             }
             return data;
-        } catch (error: any) {
-            throw new Error(error.message)
-        }
     };
 
     sendPasswordEmail = async (toEmail: string, password: string) => {
-        try {
         const length = 10;
         const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|:<>?'; //alphanumeric
         const newPassword = randomstring.generate({length, charset});
@@ -253,11 +234,6 @@ export class UserServiceClass{
         };
           const info = await transporter.sendMail(mailOptions);
           console.log('Message sent: %s', info.messageId);
-        } catch (error) {
-            console.log(error);
-            
-          console.error('Error sending email:', error);
-        }
       };
 
     //   resetPassword = async(req:Request, res:Response) =>{

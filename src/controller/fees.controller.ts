@@ -44,7 +44,7 @@ export class FeesControllerClass {
     deleteAllfees = async(req:Request, res:Response) =>{
         try {
             const data = await feesServiceClass.deleteAllfees(req,res);
-            const response = new apiResponse(200, {data}, "all fees deleted successfully")
+            const response = new apiResponse(200, data, "all fees deleted successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])
@@ -55,7 +55,7 @@ export class FeesControllerClass {
     deletefeesById = async (req:Request, res:Response) =>{
         try {
             const data = await feesServiceClass.deletefeesById(req,res);
-            const response = new apiResponse(200, {data}, " fees deleted by id successfully")
+            const response = new apiResponse(200, data, " fees deleted by id successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])
@@ -66,7 +66,7 @@ export class FeesControllerClass {
     updateFeesById = async (req:Request, res:Response) =>{ 
         try {
             const data = await feesServiceClass.updateFeesById(req, res)
-            const response = new apiResponse(200, {data}, " fees updated successfully")
+            const response = new apiResponse(200, data, " fees updated successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])

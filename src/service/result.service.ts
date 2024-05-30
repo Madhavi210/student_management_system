@@ -52,59 +52,38 @@ export class ResultService {
     // }
 
     createResult = async (req:Request, res:Response) =>{
-        try {
             await resultValidate.validate(req.body)
             const resultData = this.calculateResult(req.body);
             const data = await resultModel.create(resultData)
             if(!data){
                 throw new Error("validation error")
             }
-            return data
-        } catch (error:any) {
-            throw new Error(error.message)
-        }        
+            return data       
     }
 
     getAllResult = async (req:Request , res:Response) =>{
-        try {
             const data = await resultModel.find();
             return data;
-        } catch (error: any) {
-            throw new Error(error.message)
-        }
     }
 
     getResultById = async (req:Request, res:Response) =>{
-        try {
             const {id} = req.params;
             const data = await resultModel.findById(id)
             return data;
-        } catch (error:any) {
-            throw new Error(error.message)
-        }
     }
 
     deleteResultById = async(req:Request, res:Response) =>{ 
-        try {
             const {id} = req.params;
             const data  = await resultModel.findByIdAndDelete(id)
             return data;
-        } catch (error: any) {
-            throw new Error(error.message)
-        }
     }
 
     deleteAllResult = async(req:Request, res:Response) =>{
-        try {
             const data = await resultModel.deleteMany();
             return data;
-        } catch (error: any) {
-            throw new Error(error.message)
-        }
     }
 
     updateResultById = async (req:Request, res:Response) =>{ 
-        try {
             const {id} = req.params;
             const {student, obtainMarks, totalMarks, grade, percentage, status, rank } = req.body;
 
@@ -117,13 +96,9 @@ export class ResultService {
                 return res.status(404).json({ error: 'result not found.' });
             }
             return data;
-        } catch (error: any) {
-            throw new Error(error.message)
-        }
     }
 
     getResultDetailPDF = async (req: Request, res: Response) => {
-        try {
           const { id } = req.params;
           const { userId } = req.body;
           const data = await resultModel.find({ studentId: userId });
@@ -132,9 +107,6 @@ export class ResultService {
           }
           const doc = await generatePDF(data);
           return doc;
-        } catch (error: any) {
-          res.status(401).json({ message: error.message });
-        }
       };
 
 }

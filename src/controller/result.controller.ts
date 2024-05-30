@@ -44,7 +44,7 @@ export class ResultControllerClass {
     deleteAllResult = async(req:Request, res:Response) =>{
         try {
             const data = await resultService.deleteAllResult(req,res);
-            const response = new apiResponse(200, {data}, "all result deleted successfully")
+            const response = new apiResponse(200, data, "all result deleted successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])
@@ -55,7 +55,7 @@ export class ResultControllerClass {
     deleteResultById = async (req:Request, res:Response) =>{
         try {
             const data = await resultService.deleteResultById(req,res);
-            const response = new apiResponse(200, {data}, " result deleted by id successfully")
+            const response = new apiResponse(200, data, " result deleted by id successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])
@@ -66,7 +66,7 @@ export class ResultControllerClass {
     updateResultById = async (req:Request, res:Response) =>{ 
         try {
             const data = await resultService.updateResultById(req, res)
-            const response = new apiResponse(200, {data}, " result updated successfully")
+            const response = new apiResponse(200, data, " result updated successfully")
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])

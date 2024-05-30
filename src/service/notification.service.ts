@@ -10,58 +10,37 @@ import { readFile } from 'fs/promises';
 
 export class NotificationService {
     createNotification = async (req:Request, res:Response) =>{
-        try {
             await notificationValidate.validate(req.body)
             const data = await notificationModel.create(req.body)
             if(!data){
                 throw new Error("validation error")
             }
-            return data
-        } catch (error:any) {
-            throw new Error(error.message)
-        }        
+            return data       
     }
 
     getAllNotification = async (req:Request , res:Response) =>{
-        try {
             const data = await notificationModel.find();
             return data;
-        } catch (error: any) {
-            throw new Error(error.message)
-        }
     }
 
     getNotificationById = async (req:Request, res:Response) =>{
-        try {
             const {id} = req.params;
             const data = await notificationModel.findById(id)
             return data;
-        } catch (error:any) {
-            throw new Error(error.message)
-        }
     }
 
     deleteNotificationById = async(req:Request, res:Response) =>{ 
-        try {
             const {id} = req.params;
             const data  = await notificationModel.findByIdAndDelete(id)
             return data;
-        } catch (error: any) {
-            throw new Error(error.message)
-        }
     }
 
     deleteAllNotification = async(req:Request, res:Response) =>{
-        try {
             const data = await notificationModel.deleteMany();
             return data;
-        } catch (error: any) {
-            throw new Error(error.message)
-        }
     }
 
     updateNotificationById = async (req:Request, res:Response) =>{ 
-        try {
             const {id} = req.params;
             const {receiver, message, description, read } = req.body;
 
@@ -74,13 +53,9 @@ export class NotificationService {
                 return res.status(404).json({ error: 'notification not found.' });
             }
             return data;
-        } catch (error: any) {
-            throw new Error(error.message)
-        }
     }
 
     sendResultEmail = async (toEmail: string, password: string) => {
-        try {
         const length = 10;
         const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|:<>?'; //alphanumeric
         const newPassword = randomstring.generate({length, charset});
@@ -99,9 +74,6 @@ export class NotificationService {
         };
           const info = await transporter.sendMail(mailOptions);
           console.log('Message sent: %s', info.messageId);
-        } catch (error) {
-          console.error('Error sending email:', error);
-        }
       };
 
 }
