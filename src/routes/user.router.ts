@@ -28,6 +28,8 @@ router.post('/refreshToken', authMiddleware.refreshToken);
 
 router.post('/logout/', authMiddleware.isLoggedIn ,authMiddleware.userLogout);
 
+// router.post('/reset', userControllerObj.sendPasswordEmail)
+
 export default router;
 
 

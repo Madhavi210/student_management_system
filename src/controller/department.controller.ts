@@ -21,9 +21,9 @@ export class DepartmentControllerClass {
     getAllDepartment = async (req:Request, res:Response) =>{
         try {
             const data = await departmentService.getAllDepartment(req, res);
-            const totalrecord = await DepartmentModel.countDocuments();
-            const totalPage = Math.ceil(totalrecord / parseInt(req.query.limit as string ) || 10); 
-            const response = new apiResponse(200, {data, totalrecord, totalPage, }, 'all department retrieved successfully')
+            const totalRecord = await DepartmentModel.countDocuments();
+            const totalPage = Math.ceil(totalRecord / parseInt(req.query.limit as string ) || 10); 
+            const response = new apiResponse(200, {data, totalRecord, totalPage, }, 'all department retrieved successfully')
             res.status(response.statuscode).json(response)
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal server error", [error.message])

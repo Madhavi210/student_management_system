@@ -17,9 +17,9 @@ export class FeesControllerClass {
         }
     }
 
-    getAllfees = async(req:Request, res:Response) =>{
+    getfeesById = async(req:Request, res:Response) =>{
         try {
-            const data = await feesServiceClass.getAllfees(req,res)
+            const data = await feesServiceClass.getfeesById(req,res)
             const response = new apiResponse(200,data, "fees retrived successfully",);
             res.status(response.statuscode).json(response);
         } catch (error:any) {
@@ -28,9 +28,9 @@ export class FeesControllerClass {
         }
     }
 
-    getfeesById = async (req:Request, res:Response) => {
+    getAllfees = async (req:Request, res:Response) => {
         try {
-            const data = await feesServiceClass.getfeesById(req,res);
+            const data = await feesServiceClass.getAllfees(req,res);
             const totalRecord = await userModel.countDocuments()
             const totalPages = Math.ceil(totalRecord / (parseInt(req.query.limit as string ) || 10))            
             const response = new apiResponse(200, { totalRecord, totalPages, currentPage:( parseInt(req.query.limit as string) || 1) , data}, "fees retrived successfully")

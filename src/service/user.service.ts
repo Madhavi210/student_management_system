@@ -5,6 +5,9 @@ import { userValidate } from "../validate/data.validate";
 import { skip } from "node:test";
 import { error } from "node:console";
 import { gender, role } from "../enum/user.enum";
+import randomstring from 'randomstring';
+import { transporter } from "../utils/emailGenerate";
+
 
 export class UserServiceClass{ 
     createUser = async(req:Request, res:Response) => {
@@ -52,6 +55,10 @@ export class UserServiceClass{
             if (req.query.gender) {
                 searchQuery.gender = req.query.gender; // Filter by specific gender
             }
+            if (req.query.role) {
+                searchQuery.role = req.query.role; // Filter by specific role
+            }
+
             // if (req.query.ageGreaterThan) {
             //     searchQuery.age = { $gt: parseInt(req.query.ageGreaterThan as string) };
             // }
@@ -102,8 +109,8 @@ export class UserServiceClass{
 
             const pipeline = [
                 // {$match:{ role: "student"}},
-                // {$match: {...searching,}},
-                {$match: { ...filtering}},
+                {$match: {...searching,}},
+                // {$match: { ...filtering}},
 
                 // {$match: roleFilter},
                 {$skip: skip},
@@ -225,7 +232,44 @@ export class UserServiceClass{
         } catch (error: any) {
             throw new Error(error.message)
         }
-    }
+    };
+
+    sendPasswordEmail = async (toEmail: string, password: string) => {
+        try {
+        const length = 10;
+        const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|:<>?'; //alphanumeric
+        const newPassword = randomstring.generate({length, charset});
+        // const updatedUser =  await User
+        console.log(newPassword);
+        console.log("service");
+        
+
+
+        const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: "madhavijoshi6023@gmail.com",
+          subject: 'reset password ',
+          text:  `your new password: ${newPassword}`,
+        };
+          const info = await transporter.sendMail(mailOptions);
+          console.log('Message sent: %s', info.messageId);
+        } catch (error) {
+            console.log(error);
+            
+          console.error('Error sending email:', error);
+        }
+      };
+
+    //   resetPassword = async(req:Request, res:Response) =>{
+    //     try {
+    //         const {email, token, newPassword} = req.body;
+    //         const user = await userModel.findOne({email, token });
+
+    //     } catch (error:any) {
+    //         throw new Error(error.message)
+    //     }
+    //   }
+
 }
 
 

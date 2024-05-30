@@ -24,3 +24,4 @@ export class apiError  extends Error{
     public readonly success: boolean;
 }
 
+

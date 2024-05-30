@@ -17,10 +17,10 @@ export class NotificationControllerClass {
         }
     }
 
-    getAllNotification = async(req:Request, res:Response) =>{
+    getNotificationById = async(req:Request, res:Response) =>{
         try {
-            const data = await notificationService.getAllNotification(req,res)
-            const response = new apiResponse(200,data, "notification retrived successfully",);
+            const data = await notificationService.getNotificationById(req,res)
+            const response = new apiResponse(200,data, "notification retrieved successfully",);
             res.status(response.statuscode).json(response);
         } catch (error:any) {
             const errResponse = new apiError(500, "Internal Server Error", [ error.message, ]);
@@ -28,9 +28,9 @@ export class NotificationControllerClass {
         }
     }
 
-    getNotificationById = async (req:Request, res:Response) => {
+    getAllNotification = async (req:Request, res:Response) => {
         try {
-            const data = await notificationService.getNotificationById(req,res);
+            const data = await notificationService.getAllNotification(req,res);
             const totalRecord = await notificationModel.countDocuments()
             const totalPages = Math.ceil(totalRecord / (parseInt(req.query.limit as string ) || 10))            
             const response = new apiResponse(200, { totalRecord, totalPages, currentPage:( parseInt(req.query.limit as string) || 1) , data}, "notification retrived by id successfully")
@@ -78,11 +78,14 @@ export class NotificationControllerClass {
         const { email, password } = req.body;
       
         try {
-          await notificationService.sendPasswordEmail(email, password);
+          await notificationService.sendResultEmail(email, password);
           res.status(200).send('Password email sent successfully');
         } catch (error) {
           res.status(500).send('Error sending password email');
         }
       };
 }
+
+
+
 

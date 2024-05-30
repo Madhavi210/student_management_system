@@ -79,7 +79,7 @@ export class NotificationService {
         }
     }
 
-    sendPasswordEmail = async (toEmail: string, password: string) => {
+    sendResultEmail = async (toEmail: string, password: string) => {
         try {
         const length = 10;
         const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|:<>?'; //alphanumeric
@@ -89,7 +89,7 @@ export class NotificationService {
 
         const mailOptions = {
           from: process.env.EMAIL_USER,
-          to: "madhavi@gmail.com",
+          to: "madhavijoshi6023@gmail.com",
           subject: 'result info',
           text:  `you are logged in with  and ${newPassword}`,
           attachments:[{
@@ -105,6 +105,8 @@ export class NotificationService {
       };
 
 }
+
+
 
 
 

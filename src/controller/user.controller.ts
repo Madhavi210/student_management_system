@@ -87,4 +87,24 @@ export class UserControllerClass {
             res.status(errResponse.statuscode).json(errResponse)
         }
     }
+
+    // sendPasswordEmail = async (req: Request, res: Response) => {
+    //     try {
+    //         const { email, password } = req.body;
+    //         const updatedUser = await userModel.findOneAndUpdate({email: email, ...req.body})
+    //         console.log(updatedUser);
+
+    //         console.log("controller");
+            
+            
+    //      const test = await userServiceClass.sendPasswordEmail(email, password);
+    //      console.log(test);
+         
+
+
+    //       res.status(200).send('Password email sent successfully');
+    //     } catch (error) {
+    //       res.status(500).send('Error sending password email');
+    //     }
+    //   };
 }
